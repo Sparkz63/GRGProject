@@ -7,6 +7,8 @@ public class CameraController : MonoBehaviour {
 	public 	Vector3		upperLeftLimit;
 	public 	Vector3		lowerRightLimit;
 	
+	public GameObject g;
+	
 	// Use this for initialization
 	void Start () {
 	
@@ -18,6 +20,5 @@ public class CameraController : MonoBehaviour {
 		transform.position = transform.position + deltaPosition;
 		
 		
-	
 	}
 }
