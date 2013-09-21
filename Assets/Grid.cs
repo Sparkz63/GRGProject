@@ -12,13 +12,8 @@ public class Grid : MonoBehaviour {
 	public	int			width = 10;
 	public	int			height = 10;
 	
-	public 	Location 	location;
-	
-	private int			currentMouseXOnGrid = -1;
-	private int			currentMouseYOnGrid = -1;
-	
-	private int			currentSelectedX = -1;
-	private int			currentSelectedY = -1;
+	private Location	mouseLocation = null;
+	private Location	selectedLocation = null;
 	
 	
 	// Use this for initialization
@@ -27,7 +22,12 @@ public class Grid : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		
 		updateMouseCoordinateOnGrid();
+		
+		if (Input.GetButtonUp("Select"))
+			selectedLocation = mouseLocation;
+		
 	}
 	
 	void OnDrawGizmos() {
@@ -40,24 +40,25 @@ public class Grid : MonoBehaviour {
 		
 		for(int x = 0; x < width; x++) {
 			for(int y = 0; y < height; y++) {
-				drawSquare (x, y);
+				drawSquare (new Location(x, y));
 			}
 		}
 		
 		Gizmos.color = mouseOverColor;
-		if (currentMouseXOnGrid < width && currentMouseYOnGrid >= 0)
-			if (currentMouseYOnGrid < height && currentMouseYOnGrid >= 0)
-				drawSquare (currentMouseXOnGrid, currentMouseYOnGrid);
+		if (mouseLocation != null)
+			if (mouseLocation.x < width && mouseLocation.x >= 0)
+				if (mouseLocation.y < height && mouseLocation.y >= 0)
+					drawSquare (mouseLocation);
 		
 		Gizmos.color = selectedColor;
-		if (currentSelectedX != -1)
-			drawSquare (currentSelectedX, currentSelectedY);
+		if (selectedLocation != null)
+			drawSquare (selectedLocation);
 	}
 	
 	//	draw square on grid
-	private void drawSquare(int gridX, int gridY) {
+	private void drawSquare(Location location) {
 				Vector3 drawCoordinates = transform.position;
-				drawCoordinates += new Vector3(gridX * squareSize.x, gridY * squareSize.y, 0);
+				drawCoordinates += new Vector3(location.x * squareSize.x, location.y * squareSize.y, 0);
 				drawCoordinates += squareSize/2;
 				Gizmos.DrawWireCube(drawCoordinates,squareSize);
 	}
@@ -67,13 +68,28 @@ public class Grid : MonoBehaviour {
 		Vector3 realMousePosition = Camera.main.ScreenToWorldPoint (Input.mousePosition);
 		realMousePosition -= transform.position;
 		
-		currentMouseXOnGrid = (int) (realMousePosition.x / (squareSize.x));
-		currentMouseYOnGrid = (int) (realMousePosition.y / (squareSize.y));
+		mouseLocation = getGridCoordinate(realMousePosition);		
+	}
+	
+	public Location getGridCoordinate(Vector3 worldCoordinate) {
+		Location gridCoordinate = new Location();
 		
-		if (Input.GetButton("Select")) {
-			currentSelectedX = currentMouseXOnGrid;
-			currentSelectedY = currentMouseYOnGrid;
-		}			
+		gridCoordinate.x = (int) (worldCoordinate.x / squareSize.x);
+		gridCoordinate.y = (int) (worldCoordinate.y / squareSize.y);
+		
+		if (gridCoordinate.x < 0)
+			gridCoordinate.x = 0;
+		else if (gridCoordinate.x > width-1)
+			gridCoordinate.x = width-1;
+		
+		if (gridCoordinate.y < 0)
+			gridCoordinate.y = 0;
+		else if (gridCoordinate.y > height-1)
+			gridCoordinate.y = height-1;
+		
+		//System.Diagnostics.Debug.Print(gridCoordinate);
+		
+		return gridCoordinate;
 	}
 	
 	//public bool addToGrid(int gridX, int gridY) {
