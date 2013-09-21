@@ -5,7 +5,7 @@
 	<Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
 	<ProductVersion>10.0.20506</ProductVersion>
 	<SchemaVersion>2.0</SchemaVersion>
-	<ProjectGuid>{8D995B25-B990-F2C0-D08D-0FF17E1C2484}</ProjectGuid>
+	<ProjectGuid>{E9BF86A0-A238-9263-0C18-420C87159CDB}</ProjectGuid>
 	<OutputType>Library</OutputType>
 	<AppDesignerFolder>Properties</AppDesignerFolder>
 	<RootNamespace></RootNamespace>
@@ -47,6 +47,7 @@
      <Compile Include="Assets\CameraController.cs" />
      <Compile Include="Assets\Grid.cs" />
      <Compile Include="Assets\GridNode.cs" />
+     <Compile Include="Assets\Location.cs" />
      <Compile Include="Assets\Pawn.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

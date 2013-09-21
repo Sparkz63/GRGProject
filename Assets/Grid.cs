@@ -2,15 +2,17 @@
 using System.Collections;
 
 public class Grid : MonoBehaviour {
+	
 	public 	Vector3		squareSize = Vector3.one;
 	
 	public 	Color		gridColor = Color.blue;
 	public 	Color		mouseOverColor = Color.yellow;
 	public 	Color		selectedColor = Color.white;
+	
 	public	int			width = 10;
 	public	int			height = 10;
 	
-	
+	public 	Location 	location;
 	
 	private int			currentMouseXOnGrid = -1;
 	private int			currentMouseYOnGrid = -1;
@@ -32,6 +34,7 @@ public class Grid : MonoBehaviour {
 		drawGrid ();
 	}
 	
+	// draw entire grid 
 	void drawGrid() {
 		Gizmos.color = gridColor;
 		
@@ -51,6 +54,7 @@ public class Grid : MonoBehaviour {
 			drawSquare (currentSelectedX, currentSelectedY);
 	}
 	
+	//	draw square on grid
 	private void drawSquare(int gridX, int gridY) {
 				Vector3 drawCoordinates = transform.position;
 				drawCoordinates += new Vector3(gridX * squareSize.x, gridY * squareSize.y, 0);
@@ -58,6 +62,7 @@ public class Grid : MonoBehaviour {
 				Gizmos.DrawWireCube(drawCoordinates,squareSize);
 	}
 	
+	//	update the mouse coordinates on the screen and highlight / select the appropriate square
 	private void updateMouseCoordinateOnGrid() {
 		Vector3 realMousePosition = Camera.main.ScreenToWorldPoint (Input.mousePosition);
 		realMousePosition -= transform.position;
